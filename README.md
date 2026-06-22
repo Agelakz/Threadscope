@@ -37,7 +37,7 @@ Gampang kok, tinggal copas ini di terminal:
 ```bash
 # 1. Clone & masuk folder
 git clone <repo-url>
-cd threads-aff-final
+cd Threadscope
 
 # 2. Bikin virtual env
 python -m venv venv
