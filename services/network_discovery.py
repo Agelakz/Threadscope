@@ -207,7 +207,14 @@ class NetworkDiscovery:
             if "/graphql/query" in url.lower():
                 try:
                     req_post_data = response.request.post_data
-                    payload = json.loads(req_post_data) if req_post_data else {}
+                    payload = {}
+                    if req_post_data:
+                        try:
+                            payload = json.loads(req_post_data)
+                        except json.JSONDecodeError:
+                            # Parse urlencoded payload
+                            from urllib.parse import parse_qsl
+                            payload = dict(parse_qsl(req_post_data))
                     doc_id = payload.get("doc_id")
                     friendly_name = payload.get("fb_api_req_friendly_name")
                     
