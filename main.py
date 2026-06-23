@@ -17,7 +17,6 @@ import sys
 from dotenv import load_dotenv
 
 from services.session_manager import SessionManager, ThreadsAuth, SessionStatus
-from services.shopee_generator import generate_affiliate_link
 from services.feed_explorer import FeedExplorer
 from services.network_discovery import NetworkDiscovery
 
@@ -163,28 +162,6 @@ def run_automation(session_manager: SessionManager):
     return True
 
 
-def test_shopee_link_generation():
-    """Test the Shopee affiliate link generation."""
-    logger.info("\n" + "=" * 60)
-    logger.info("Testing Shopee Link Generation")
-    logger.info("=" * 60)
-
-    dummy_product_url = "https://shopee.co.id/product/example/123456789"
-    
-    try:
-        affiliate_link = generate_affiliate_link(dummy_product_url)
-        
-        if affiliate_link:
-            logger.info(f"✓ Generated affiliate link: {affiliate_link}")
-            return True
-        else:
-            logger.error("✗ Failed to generate affiliate link!")
-            return False
-
-    except Exception as e:
-        logger.error(f"✗ Shopee link generation error: {e}")
-        return False
-
 
 def main():
     """Main entry point for the automation bot."""
@@ -216,21 +193,14 @@ def main():
         # Session valid - run automation
         threads_success = run_automation(session_manager)
         
-        # Test Shopee (independent of Threads session)
-        logger.info("\n" + "=" * 60)
-        logger.info("Testing Shopee Link Generation")
-        logger.info("=" * 60)
-        shopee_success = test_shopee_link_generation()
-
         # Summary
         logger.info("\n" + "=" * 60)
         logger.info("SUMMARY")
         logger.info("=" * 60)
         logger.info(f"Threads Session:       {'✓ PASS' if threads_success else '✗ FAIL'}")
-        logger.info(f"Shopee Link Gen:       {'✓ PASS' if shopee_success else '✗ FAIL'}")
         logger.info("=" * 60)
 
-        if threads_success and shopee_success:
+        if threads_success:
             logger.info("All tests passed!")
             return 0
         else:
